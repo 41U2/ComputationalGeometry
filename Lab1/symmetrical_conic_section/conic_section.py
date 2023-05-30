@@ -40,7 +40,7 @@ def symmetric_conic_section_in_box(
         ], first_added_point
     )
     if not success:
-        return False, [], []
+        return False, [], [], [[], []]
     success, left_lower_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
         [
             (left_point, left_tangent_line),
@@ -48,7 +48,7 @@ def symmetric_conic_section_in_box(
         ], second_added_point
     )
     if not success:
-        return False, [], []
+        return False, [], [], [[], []]
 
     first_added_point_mirrored = (2 * box_center[0] - first_added_point[0], first_added_point[1])
     success, right_upper_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
@@ -58,7 +58,7 @@ def symmetric_conic_section_in_box(
         ], first_added_point_mirrored
     )
     if not success:
-        return False, [], []
+        return False, [], [], [[], []]
 
     second_added_point_mirrored = (2 * box_center[0] - second_added_point[0], second_added_point[1])
     success, right_lower_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
@@ -68,7 +68,7 @@ def symmetric_conic_section_in_box(
         ], second_added_point_mirrored
     )
     if not success:
-        return False, [], []
+        return False, [], [], [[], []]
 
     return True, conic_section_utils.combined_conic_section_function(
         [
@@ -115,4 +115,26 @@ def symmetric_conic_section_in_box(
             "\n a13 = " + str(right_lower_func.a13) +
             "\n a23 = " + str(right_lower_func.a23) +
             "\n a33 = " + str(right_lower_func.a33)
-    ]
+    ], \
+    (
+        [
+            left_point[0],
+            upper_point[0],
+            right_point[0],
+            lower_point[0],
+            first_added_point[0],
+            second_added_point[0],
+            first_added_point_mirrored[0],
+            second_added_point_mirrored[0],
+        ],
+        [
+            left_point[1],
+            upper_point[1],
+            right_point[1],
+            lower_point[1],
+            first_added_point[1],
+            second_added_point[1],
+            first_added_point_mirrored[1],
+            second_added_point_mirrored[1],
+        ]
+    )

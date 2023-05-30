@@ -15,10 +15,11 @@ def draw_implicit_function_2d(
         function,
         x_range: Tuple[float, float],
         y_range: Tuple[float, float],
-        corners_data
+        corners_data,
+        points: Tuple[List[float], List[float]]
 ):
     assert len(corners_data) == 4
-    delta = 0.003
+    delta = 0.0015
     xrange = np.arange(x_range[0], x_range[1], delta)
     yrange = np.arange(y_range[0], y_range[1], delta)
     X, Y = np.meshgrid(xrange, yrange)
@@ -41,6 +42,8 @@ def draw_implicit_function_2d(
     ax.text(
         x_range[0] + (x_range[1] - x_range[0]) * 1.2,
         y_range[0] + (y_range[1] - y_range[0]) * 0.1, corners_data[3], fontsize=15)
+
+    ax.scatter(points[0], points[1])
 
     # Axis settings
     plt.axis([x_range[0], x_range[1], y_range[0], y_range[1]])
