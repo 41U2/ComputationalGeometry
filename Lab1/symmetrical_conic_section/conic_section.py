@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from symmetrical_conic_section import conic_section_utils, curves
+from symmetrical_conic_section import conic_section_utils, curves, curves_classification
 
 
 def symmetric_conic_section_in_box(
@@ -39,12 +39,16 @@ def symmetric_conic_section_in_box(
             (left_point, left_tangent_line)
         ], first_added_point
     )
+    if not success:
+        return False, [], []
     success, left_lower_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
         [
             (left_point, left_tangent_line),
             (lower_point, lower_tangent_line)
         ], second_added_point
     )
+    if not success:
+        return False, [], []
 
     first_added_point_mirrored = (2 * box_center[0] - first_added_point[0], first_added_point[1])
     success, right_upper_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
@@ -53,6 +57,8 @@ def symmetric_conic_section_in_box(
             (right_point, right_tangent_line)
         ], first_added_point_mirrored
     )
+    if not success:
+        return False, [], []
 
     second_added_point_mirrored = (2 * box_center[0] - second_added_point[0], second_added_point[1])
     success, right_lower_func = conic_section_utils.compute_conic_section_using_3_points_and_2_tangent_lines(
@@ -61,8 +67,12 @@ def symmetric_conic_section_in_box(
             (lower_point, lower_tangent_line)
         ], second_added_point_mirrored
     )
-    return conic_section_utils.combined_conic_section_function(
+    if not success:
+        return False, [], []
+
+    return True, conic_section_utils.combined_conic_section_function(
         [
+            #
             (left_lower_func, (box_center[0] - box_size[0] / 2, box_center[0]),
              (box_center[1] - box_size[1] / 2, y_border)),
             #
@@ -75,4 +85,34 @@ def symmetric_conic_section_in_box(
             (right_lower_func, (box_center[0], box_center[0] + box_size[0] / 2),
              (box_center[1] - box_size[1] / 2, y_border))
         ]
-    )
+    ), \
+    [
+        curves_classification.curve_class(left_lower_func) +
+            "\n a11 = " + str(left_lower_func.a11) +
+            "\n a12 = " + str(left_lower_func.a12) +
+            "\n a22 = " + str(left_lower_func.a22) +
+            "\n a13 = " + str(left_lower_func.a13) +
+            "\n a23 = " + str(left_lower_func.a23) +
+            "\n a33 = " + str(left_lower_func.a33),
+        curves_classification.curve_class(left_upper_func) +
+            "\n a11 = " + str(left_upper_func.a11) +
+            "\n a12 = " + str(left_upper_func.a12) +
+            "\n a22 = " + str(left_upper_func.a22) +
+            "\n a13 = " + str(left_upper_func.a13) +
+            "\n a23 = " + str(left_upper_func.a23) +
+            "\n a33 = " + str(left_upper_func.a33),
+        curves_classification.curve_class(right_upper_func) +
+            "\n a11 = " + str(right_upper_func.a11) +
+            "\n a12 = " + str(right_upper_func.a12) +
+            "\n a22 = " + str(right_upper_func.a22) +
+            "\n a13 = " + str(right_upper_func.a13) +
+            "\n a23 = " + str(right_upper_func.a23) +
+            "\n a33 = " + str(right_upper_func.a33),
+        curves_classification.curve_class(right_lower_func) +
+            "\n a11 = " + str(right_lower_func.a11) +
+            "\n a12 = " + str(right_lower_func.a12) +
+            "\n a22 = " + str(right_lower_func.a22) +
+            "\n a13 = " + str(right_lower_func.a13) +
+            "\n a23 = " + str(right_lower_func.a23) +
+            "\n a33 = " + str(right_lower_func.a33)
+    ]
